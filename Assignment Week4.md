@@ -1,4 +1,4 @@
-# Assignment-Week4: 세계 청소년/ 자살률 데이터 다루기
+# Assignment-Week4: 세계 청소년/청년 자살률 데이터 다루기
 
 데이터 다운로드: https://drive.google.com/drive/folders/1rMRWTbCQlNb_waDm4qiHrYjiz8HvH5at?usp=sharing
 
