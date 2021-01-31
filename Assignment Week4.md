@@ -3,7 +3,7 @@
 데이터 다운로드: https://drive.google.com/drive/folders/1rMRWTbCQlNb_waDm4qiHrYjiz8HvH5at?usp=sharing
 
 ### 문제 1번
-* 20~24세 자살률 상위 25% 국가 중, 20-24세 자살률의 남여비가 가장 큰 국가 7개 그래프를 그려주세요.  
+* 20~24세 자살률 상위 25% 국가 중, 20-24세 자살률의 남여비(남자 자살률/여자 자살률! 비율)가 가장 큰 국가 7개 그래프를 그려주세요.  
 ![Sex_ratio](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/Cont_Suicide_sex.JPG)
 * 대륙별 20-24세 자살률 평균 그래프를 그려주세요. (성별 포함)  
 ![Cont_Suciderate](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/Sexratio.png)
