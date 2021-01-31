@@ -7,7 +7,7 @@
 ![Sex_ratio](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/Cont_Suicide_sex.JPG)
 * 대륙별 20-24세 자살률 평균 그래프를 그려주세요. (성별 포함)  
 ![Cont_Suciderate](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/Sexratio.png)
-* 100 000명당 정신보건인력 수와 국가별 10세~29세 자살률의 상관관계 그래프를 그려주세요. (10세 이하 데이터는 제외해주세요./연령별 인구 비율은 무시합니다. 단순히 연령별 자살률 평균만 내어주시면 )  
+* 100 000명당 정신보건인력 수와 국가별 10세~29세 자살률의 상관관계 그래프를 그려주세요. (10세 이하 데이터는 제외해주세요./연령별 인구 비율은 무시합니다. 단순히 연령별 자살률 평균만 내어주시면 되어요 )  
 ![HR_Suiciderate](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/HR_suiciderate.PNG)
 
 
