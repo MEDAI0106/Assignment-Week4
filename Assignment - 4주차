@@ -72,7 +72,7 @@ ggplot(data = suicide_continent4, aes(x = continent, y = mean_suicide, fill = Se
   xlab("Continent")+
   ylab("Crude suicide rates(per 100 000 population")
 
-
+![assignment 4-2](https://user-images.githubusercontent.com/77039421/106610169-c7bf1800-65a9-11eb-8b29-bda8f9ba6226.png)
 ## 1-3
 
 raw_HR <- read.csv(file = "Human_resources.csv", stringsAsFactors = F)
@@ -109,6 +109,8 @@ ggplot(data = suicide_HR, aes(x = total, y=mean_suicide ))+
   ggtitle("Is there any correlation? \n Hmm..")+
   xlab("HR working in mental health sector(per100 000 popylation)")+
   ylab("10-29 year old suicide rate per 100 000")
+  
+![assignment 4-3](https://user-images.githubusercontent.com/77039421/106610239-dc9bab80-65a9-11eb-85ba-fb6b5260f421.png)
 
 ## 2 HR 인구와 남녀 차이와의 관계
 
@@ -135,3 +137,6 @@ ggplot(data = suicide_differ_HR, aes(x = total, y=differ ))+
   ggtitle("HR working & difference of sex")+
   xlab("HR working in mental health sector(per100 000 popylation)")+
   ylab("difference of 10-29 year old suicide rate ")
+  
+![assignment 4-4](https://user-images.githubusercontent.com/77039421/106610309-f76e2000-65a9-11eb-9f12-835506f88dc1.png)
+
