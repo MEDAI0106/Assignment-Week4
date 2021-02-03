@@ -1,15 +1,79 @@
-# Assignment-Week4: ì„¸ê³„ ì²­ì†Œë…„/ì²­ë…„ ìì‚´ë¥  ë°ì´í„° ë‹¤ë£¨ê¸°
+# Assignment-Week4: ¼¼°è Ã»¼Ò³â/Ã»³â ÀÚ»ì·ü µ¥ÀÌÅÍ ´Ù·ç±â
+library(dplyr)
 
-ë°ì´í„° ë‹¤ìš´ë¡œë“œ: https://drive.google.com/drive/folders/1rMRWTbCQlNb_waDm4qiHrYjiz8HvH5at?usp=sharing
+data_countrycontinent <- read.csv("countryContinent.csv")
+data_suicide <- read.csv("SDGSUICIDE.csv")
+data_human <- read.csv("Human_resources.csv")
 
-### ë¬¸ì œ 1ë²ˆ
-* 20~24ì„¸ ìì‚´ë¥  ìƒìœ„ 25% êµ­ê°€ ì¤‘, 20-24ì„¸ ìì‚´ë¥ ì˜ ë‚¨ì—¬ë¹„(ë‚¨ì ìì‚´ë¥ /ì—¬ì ìì‚´ë¥ ! ë¹„ìœ¨)ê°€ ê°€ì¥ í° êµ­ê°€ 7ê°œ ê·¸ë˜í”„ë¥¼ ê·¸ë ¤ì£¼ì„¸ìš”.  
-![Sex_ratio](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/Cont_Suicide_sex.JPG)
-* ëŒ€ë¥™ë³„ 20-24ì„¸ ìì‚´ë¥  í‰ê·  ê·¸ë˜í”„ë¥¼ ê·¸ë ¤ì£¼ì„¸ìš”. (ì„±ë³„ í¬í•¨)  
-![Cont_Suciderate](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/Sexratio.png)
-* 100 000ëª…ë‹¹ ì •ì‹ ë³´ê±´ì¸ë ¥ ìˆ˜ì™€ êµ­ê°€ë³„ 10ì„¸~29ì„¸ ìì‚´ë¥ ì˜ ìƒê´€ê´€ê³„ë¥¼ ì•Œ ìˆ˜ ìˆëŠ” ì‚°ì ë„ë¥¼ ê·¸ë ¤ì£¼ì„¸ìš”. (10ì„¸ ì´í•˜ ë°ì´í„°ëŠ” ì œì™¸í•´ì£¼ì„¸ìš”./ì—°ë ¹ë³„ ì¸êµ¬ ë¹„ìœ¨ì€ ë¬´ì‹œí•©ë‹ˆë‹¤. ë‹¨ìˆœíˆ ì—°ë ¹ë³„ ìì‚´ë¥  í‰ê· ë§Œ ë‚´ì–´ì£¼ì‹œë©´ ë˜ì–´ìš” )  
-![HR_Suiciderate](https://github.com/Shinye-Kang/desktop-tutorial/blob/main/HR_suiciderate.PNG)
+summary(data_countrycontinent)
+summary(data_suicide)
+View(data_suicide)
+### ¹®Á¦ 1¹ø
+# 20~24¼¼ ÀÚ»ì·ü »óÀ§ 25% ±¹°¡ Áß, 20-24¼¼ ÀÚ»ì·üÀÇ ³²¿©ºñ(³²ÀÚ ÀÚ»ì·ü/¿©ÀÚ ÀÚ»ì·ü! ºñÀ²)°¡ °¡Àå Å« ±¹°¡ 7°³ ±×·¡ÇÁ¸¦ ±×·ÁÁÖ¼¼¿ä.  
+
+# 20~24¼¼ ÀÚ»ì·ü »óÀ§ 25% ±¹°¡->data_suicideÀÇ 4¹øÂ° col(..1) // ±¹°¡ÀÇ both sexes Çà(3~551 °£°İ 3) // »óÀ§ 25% => 3/4 ÀÌ»ó 
+#charater -> numericÀ¸·Î 
+data_suicide$Crude.suicide.rates..per.100.000.population..1 <- as.numeric(data_suicide$Crude.suicide.rates..per.100.000.population..1)
+
+# ÀÎµ¦½º ¹øÈ£·Î ÃßÃâÀ» ¸øÇÏ°ÚÀ¸´Ï±î True False¸¦ ½áº¼±î? X.1¿¡¼­ both sexesÀÌ¸é True
+data_suicide$Both <- ifelse(data_suicide$X.1 == " Both sexes", "True","False" )
+new_suicideboth <- data_suicide %>% filter(Both == "True")
+
+summary(new_suicideboth$Crude.suicide.rates..per.100.000.population..1)
+# 3rd Qu. 13.50 ÀÌ»óÀÎ Çà ÃßÃâ
+data_suicide$q3 <- ifelse(data_suicide$Both == "True" & data_suicide$Crude.suicide.rates..per.100.000.population..1 >= 13.50, "q3", "n")
+
+#³²³à ÀÚ»ì·ü ºñ
+# data_suicide$X.1 == "Male"ÀÇ Crude.suicide.rates..per.100.000.population..1 ³ª´©±â data_suicide$X.1 == "Female"ÀÇ Crude.suicide.rates..per.100.000.population..1
+
+male <- data_suicide %>% filter(X.1 == " Male")
+female <- data_suicide %>% filter(X.1 == " Female")
+
+new_suicideboth$mf_rate <- male$Crude.suicide.rates..per.100.000.population..1 / female$Crude.suicide.rates..per.100.000.population..1
+
+q3_mf_rate <- new_suicideboth %>% filter(q3 == "q3")
+order(q3_mf_rate$mf_rate)
+# index : 17 29 24 42 46 32 35 ???
+
+q3_mf_rate_order <- q3_mf_rate[c(order(-q3_mf_rate$mf_rate)),]
+
+head(q3_mf_rate_order, 7)
+
+library(ggplot2)
+
+ggplot(data = q3_mf_rate_order, aes(x = mf_rate, y=X)) +geom_col()
 
 
-### ì•—.. ì •ì‹ ë³´ê±´ë¶„ì•¼ ì¢…ì‚¬ì ìˆ˜ì™€ ì²­ì†Œë…„,ì²­ë…„  ìì‚´ë¥  ì‚¬ì´ì— í° ìƒê´€ê´€ê³„ê°€ ë³´ì´ì§€ ì•ŠëŠ” ê²ƒ ê°™ë„¤ìš”. ì˜¤ê¸°ê°€ ìƒê¸´ ë‹¹ì‹ ì€ ê´€ë ¨ ìˆëŠ” ë°ì´í„°ë¥¼ ê¼­ ì°¾ê¸°ë¡œ ë§ˆìŒë¨¹ì—ˆìŠµë‹ˆë‹¤. ë¬¸ì œ 2ë²ˆ. ì£¼ì–´ì§„ ë°ì´í„°ì™€ ê´€ë ¨ìˆì„ ê²ƒ ê°™ì€ ë°ì´í„°ë¥¼ ìŠ¤ìŠ¤ë¡œ ì°¾ì•„ ê·¸ë˜í”„ë¥¼ ê·¸ë ¤ì£¼ì„¸ìš”. 
-* ìƒê´€ê´€ê³„ê°€ ë‚˜íƒ€ë‚˜ì§€ ì•Šì•„ë„ ì¢‹ìŠµë‹ˆë‹¤. ë˜ëŠ” ëª¨ë“  êµ­ê°€ì˜ ë°ì´í„°ë¥¼ ì´ìš©í•˜ì§€ ì•Šì•„ë„ ë©ë‹ˆë‹¤. ê¶ê¸ˆí•œ ì ì„ ë°ì´í„°ë¡œ í’€ì–´ë³´ì„¸ìš”!
+# ´ë·úº° 20-24¼¼ ÀÚ»ì·ü Æò±Õ ±×·¡ÇÁ¸¦ ±×·ÁÁÖ¼¼¿ä. (¼ºº° Æ÷ÇÔ)  
+#countryº¯¼ö -> data_countrycontinent º¯¼ö ÀÌ¿ëÇØ¼­ continent ¿­ Ãß°¡ => Æò±Õ ±¸ÇÏ±â => ±×·¡ÇÁ
+
+# 100 000¸í´ç Á¤½Åº¸°ÇÀÎ·Â ¼ö¿Í ±¹°¡º° 10¼¼~29¼¼ ÀÚ»ì·üÀÇ »ó°ü°ü°è¸¦ ¾Ë ¼ö ÀÖ´Â »êÁ¡µµ¸¦ ±×·ÁÁÖ¼¼¿ä. (10¼¼ ÀÌÇÏ µ¥ÀÌÅÍ´Â Á¦¿ÜÇØÁÖ¼¼¿ä./¿¬·Éº° ÀÎ±¸ ºñÀ²Àº ¹«½ÃÇÕ´Ï´Ù. ´Ü¼øÈ÷ ¿¬·Éº° ÀÚ»ì·ü Æò±Õ¸¸ ³»¾îÁÖ½Ã¸é µÇ¾î¿ä )  
+View(data_human)
+# data_humanÀÇ ¿­ ´Ù ´õÇØ¼­ »õ·Î¿î ¿­(Á¤½Åº¸°ÇÀÎ·Â ¼ö)
+
+
+
+data_human <- rename(data_human, v1 = Psychiatrists.working.in.mental.health.sector..per.100.000.population., v2 = Nurses.working.in.mental.health.sector..per.100.000.population., v3 = Social.workers.working.in.mental.health.sector..per.100.000.population.,
+v4 = Psychologists.working.in.mental.health.sector..per.100.000.population.)
+#°áÃø°ª 0À¸·Î ¹Ù²Ù±â
+data_human$v1 <- ifelse(is.na(data_human$v1), 0, data_human$v1)
+data_human$v2 <- ifelse(is.na(data_human$v2), 0, data_human$v2)
+data_human$v3 <- ifelse(is.na(data_human$v3), 0, data_human$v3)
+data_human$v4 <- ifelse(is.na(data_human$v4), 0, data_human$v4)
+
+data_human$v5 <- data_human$v1+data_human$v2+data_human$v3+data_human$v4
+
+# xÃà: data_human Á¤½Åº¸°ÇÀÎ·Â¼ö
+# yÃà: 10~29¼¼ ÀÚ»ì·ü(10~29¼¼, both sexes Çà ÃÑÇÕ ´õÇÑ ¿­ »õ·Î ¸¸µé±â)
+
+# »õ·Î¿î µ¥ÀÌÅÍ ÇÁ·¹ÀÓ ¸¸µé±â
+new_sh <- data.frame()
+new_sh$human <- data_human$v5
+
+
+library(ggplot2)
+ggplot(data = new_sh)
+
+### ¾Ñ.. Á¤½Åº¸°ÇºĞ¾ß Á¾»çÀÚ ¼ö¿Í Ã»¼Ò³â,Ã»³â  ÀÚ»ì·ü »çÀÌ¿¡ Å« »ó°ü°ü°è°¡ º¸ÀÌÁö ¾Ê´Â °Í °°³×¿ä. ¿À±â°¡ »ı±ä ´ç½ÅÀº °ü·Ã ÀÖ´Â µ¥ÀÌÅÍ¸¦ ²À Ã£±â·Î ¸¶À½¸Ô¾ú½À´Ï´Ù. ¹®Á¦ 2¹ø. ÁÖ¾îÁø µ¥ÀÌÅÍ¿Í °ü·ÃÀÖÀ» °Í °°Àº µ¥ÀÌÅÍ¸¦ ½º½º·Î Ã£¾Æ ±×·¡ÇÁ¸¦ ±×·ÁÁÖ¼¼¿ä. 
+# »ó°ü°ü°è°¡ ³ªÅ¸³ªÁö ¾Ê¾Æµµ ÁÁ½À´Ï´Ù. ¶Ç´Â ¸ğµç ±¹°¡ÀÇ µ¥ÀÌÅÍ¸¦ ÀÌ¿ëÇÏÁö ¾Ê¾Æµµ µË´Ï´Ù. ±Ã±İÇÑ Á¡À» µ¥ÀÌÅÍ·Î Ç®¾îº¸¼¼¿ä!
+
