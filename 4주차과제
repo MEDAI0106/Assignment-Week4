@@ -1,0 +1,50 @@
+#저장하는 법을 잘 몰라서 메모장에 한 줄씩 옮겨적은거라 누락이 좀 있을 것 같아용(바보)
+
+1.
+library(dplyr)
+library(ggplot2)
+suicide<-read.csv("SDGSUICIDE.csv")
+#anwer 변수는 20-24살 자살율 이름 바꾼겁니당
+suicide %>% filter(sex == " Both sexes") %>% filter(answer >= unname(quantile(answer, 0.75)))
+suicide1<-suicide %>% filter(sex == " Both sexes") %>% filter(answer >= unname(quantile(answer, 0.75))) %>% select(country)
+suicideF<-suicide %>% filter(country %in% suicide1$country) %>% select(country, sex, answer) %>% filter(sex == " Female")
+sucideM<-suicide %>% filter(country %in% suicide1$country) %>% select(country, sex, answer) %>% filter(sex == " Male")  
+sucideM<- rename(sucideM, answer1 = answer)
+totla<-left_join(suicideF, sucideM, by = "country")
+total<-totla %>% mutate(ratio = (answer1/answer)*100)
+head(arrange(total,desc(ratio)),7)
+data<-head(arrange(total,desc(ratio)),7)
+ggplot(data = data, aes(x = reorder(country, ratio), y = ratio))+geom_col()+coord_flip()
+
+2.
+suicide1<-suicide %>% select(country, sex, answer)
+continent1<-continent %>% select(country, continent)
+total<-left_join(suicide1, continent1, by = "country")
+total<-total %>% filter(!is.na(continent))
+total<-total %>% group_by(continent, sex) %>% summarise(result = mean(answer))
+ggplot(data = total, aes(x = continent, y = result, fill = sex)) + geom_col(position = "dodge")
+ggplot(data = total, aes(x = reorder(continent, result), y = result, fill = sex)) + geom_col(position = "dodge")
+
+3.
+#a,b,c,d는 10살 제외 나머지 자살율 변수 이름입니다.
+suicde <-suicde %>% mutate(total = (a + b + c + d)/4) %>% filter(sex == " Both sexes") %>% select(country, total)
+HR1<-read.csv("Human_resources.csv")
+HR1[is.na(HR1)]<-0
+HR1 <-HR1 %>% mutate(sum = Psychiatrists + Nurses + Socialworkers + Psychologists)
+HR1<-HR1 %>% select(Country, sum)
+HR1<- rename(HR1, country = Country)
+relation<-left_join(HR1, suicde, by = "country")
+relation[is.na(relation)]<-0
+ggplot(data = relation, aes(x = Workers, y = Suiciderate)) + geom_point()
+
+4
+HR<-read.csv("Human_resources.csv")
+HR[is.na(HR)]<-0
+HR <-HR %>% mutate(sum = Psychiatrists + Nurses + Socialworkers + Psychologists) %>% select(Country, sum)
+HR<- rename(HR, country = Country)
+alcoholism<-read.csv("alcohol.csv")
+names(alcoholism)[1]<-c("country")
+alcoholism <-alcoholism %>% mutate(alcoholic = males + females) %>% select(country, alcoholic)
+result<-left_join(HR, alcoholism, by = "country")
+result<- rename(result, workers = sum)
+ggplot(data = result, aes(x = workers, y = alcoholic)) + geom_point()
